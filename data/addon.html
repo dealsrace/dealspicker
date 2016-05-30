@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .txtsearch {
+            width: 85%;
+            height: 24px;
+            float: left;
+        }
+
+        .logo {
+            height: 66px;
+            width: 291px;
+        }
+
+        .btnSearch {
+            width: 24px;
+            height: 24px;
+            border: gray solid thin;
+            cursor: pointer;
+            outline: none;
+            padding-top: 1px;
+            padding-bottom: 1px;
+            float: right;
+        }
+
+            .btnSearch:hover {
+                border: #428bca solid thin;
+            }
+
+        .prImage {
+            width: 50px;
+            height: 50px;
+        }
+
+        .prTitle {
+            overflow: hidden;
+            height: 35px !important;
+        }
+
+        .prPrice {
+            color: #b12704 !important;
+        }
+
+        .prUrl {
+            display: inline-block;
+            padding: 6px 12px;
+            margin-bottom: 0;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.42857143;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            cursor: pointer;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-image: none;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            color: #fff;
+            background-color: #428bca;
+            border-color: #357ebd;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div align="center">
+            <img src="./DealsRace_logo.jpg" class="logo" alt="DealsRace logo" />
+        </div>
+        <div>
+            <input class="txtsearch" aria-haspopup="true" aria-autocomplete="list" role="textbox" value="" placeholder="Search for a Product, Category or a Brand" type="text" id="q">
+            <div id="search" class="btnSearch">
+                <img src="./search.png" alt="search" />
+            </div>
+        </div>
+    </div>
+    <div style="clear: both; " /><br />
+    <div align="center" style="display:none" id="loader"><img src="./loader.gif"></div>
+    <div align="center" style="" id="results">
+        <table id="tblOffers">
+            <tbody id="tblOffersBody"></tbody>
+        </table>
+
+        <table id="tbltemplates">
+            <tbody>
+                <tr id="rowTemplate" style="display: none">
+                    <td width="20%"><img class="prImage" src="" /></td>
+                    <td width="45%"><div class="prTitle"></div></td>
+                    <td width="15%"><span class="prPrice"></span></td>
+                    <td width="15%"><span class="prUrl" url="" onclick="OpenNewTab(this)">See it</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </div>
+
+    <script type="text/javascript" src="./jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="http://l2.io/ip.js?var=myip"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#search").click(function (e) {
+                $("#loader").show();
+                e.preventDefault();
+                $.ajax({
+                    type: "GET",
+                    url: "http://www.dealsrace.com/api/find/1",
+                    data: { key: encodeURIComponent($("#q").val()), ip: myip, ua: navigator.userAgent },
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+
+                        $("#tblOffersBody").empty();
+
+                        $.each(data, function (index) {
+                            var row = $('#rowTemplate').clone().attr('id', '').attr('style', '');
+
+                            row.find('.prImage').attr("src", data[index].Image);
+                            row.find('.prTitle').html(data[index].Title);
+                            row.find('.prPrice').html(data[index].Price);
+                            row.find('.prUrl').attr("url", data[index].Url);
+
+                            row.appendTo('#tblOffers tbody');
+                        });
+                        $("#loader").hide();
+                        RaiseResultReceivedEvent();
+                    },
+                    error: function (xhr, message, error) { $("#loader").hide(); $("#q").val('We are experiencing some technical issues. Please try again later'); }
+                });
+            });
+        });
+
+        function RaiseResultReceivedEvent() {
+
+            var event = new CustomEvent(
+	            "resultReceived",
+	            {
+	                detail: {
+	                    message: "newMessage!",
+	                    time: new Date(),
+	                },
+	                bubbles: true,
+	                cancelable: true
+	            }
+            );
+            document.getElementById("q").dispatchEvent(event);
+        }
+
+        function OpenNewTab(btn) {
+            var event = new CustomEvent(
+	            "newtab",
+	            {
+	                detail: {
+	                    message: $(btn).attr('url'),
+	                    time: new Date(),
+	                },
+	                bubbles: true,
+	                cancelable: true
+	            }
+            );
+            document.getElementById("q").dispatchEvent(event);
+        }
+
+
+
+
+    </script>
+</body>
+</html>
