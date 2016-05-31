@@ -1,7 +1,7 @@
 {
   "title": "Deals Picker",
   "name": "dealspicker",
-  "version": "0.0.3",
+  "version": "0.0.6",
   "description": "DealsRace is the industry leader in online shopping and product price comparison. Deals Picker add-on will help you find the best deals available online on DealsRace. ",
   "main": "index.js",
   "author": "DealsRace",

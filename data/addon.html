@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
     <style>
         .txtsearch {
             width: 85%;
@@ -101,7 +103,6 @@
     </div>
 
     <script type="text/javascript" src="./jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="http://l2.io/ip.js?var=myip"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $("#search").click(function (e) {
@@ -110,7 +111,7 @@
                 $.ajax({
                     type: "GET",
                     url: "http://www.dealsrace.com/api/find/1",
-                    data: { key: encodeURIComponent($("#q").val()), ip: myip, ua: navigator.userAgent },
+                    data: { key: encodeURIComponent($("#q").val()), ua: navigator.userAgent },
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function (data) {
