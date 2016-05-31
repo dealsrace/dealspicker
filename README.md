@@ -13,3 +13,18 @@
 <blockquote>
 <p>By default, the addon-sdk folder is assumed to be one directory above the project. This can be modified using the <code>--sdk</code> parameter.</p>
 </blockquote>
+
+<h3>Folders description</h3>
+
+<ul>
+<li>compile: nodejs auto-compiler</li>
+<li>preview: screenshots</li>
+</ul>
+
+<h3>How to try the precompiled latest version</h3>
+<ol>
+<li>Select the right branch</li>
+<li>Browse the compile directory</li>
+<li>Download the raw *.xpi file</li>
+<li>Drag and drop it into Firefox</li>
+</ol>
